@@ -41,7 +41,7 @@ Linha de execução do Node:
 - Event Loop verifica se possui alguma operação pendente
   - 1 Algum timer pendente (SetTimout, SetInterval, SetImediate)
   - 2 Alguma Task do Sistema operacional pendentes (Ex: Servidor esperando requests HTTP)
-  - 3 Alguma Operação Longa async (funções do Fs)
+  - 3 Alguma Operação Longa async (Thread-Pool)
 - Se sim roda outro tick
 - Verifica se as funções pendentes foram resolvidas e executa seu callback
 - Pausa a execução do tick e só inicia uma nova execução quando alguma função pendente emite um evento que está pronta para ser executada.
@@ -70,3 +70,7 @@ Thread-Pool e Event Loop: Só resolve o callback das funções quando a Thread P
 ## Libuv Tasks do Sistema Operacional
 
 A libuv para fazer operações de baixo nivel delega isso para funções do sistema operacional, o qual executa fora do event loop e fora de uma thread-pool. Normalmente todas as funções que lidam com networking são lidadas pelo sistema operacional.
+
+## Referencias
+
+Nodejs - Event Loop(https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick)
