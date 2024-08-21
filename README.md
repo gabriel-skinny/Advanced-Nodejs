@@ -63,7 +63,7 @@ Multi-Threading: Alguns computadores possuem Cpu's core que tem a funcionalidade
 
 Thread-Pool: É uma solução usada para executar programas que são intensivos em CPU usando paralelismo. Ele o faz criando varias threas ante-mão, esperando tasks chegarem para serem executadas e o programa vai dispondo as thrdeas disponiveis para executa-las. A vantagem é não precisar ficar criando e apagando threads, o que gasta tempo de execucação e aumenta a latencia das respostas.
 
-Libuv: Cria por padrão 4 threads na sua Thread Pool, mas o ideal é seguir o número de threds da CPU.
+Libuv: Cria por padrão 4 threads na sua Thread Pool, mas o ideal é seguir o número de threds que sua CPU pode executar ao mesmo tempo.
 
 Thread-Pool e Event Loop: Só resolve o callback das funções quando a Thread Pool inteira é resolvida.
 
@@ -74,3 +74,35 @@ A libuv para fazer operações de baixo nivel delega isso para funções do sist
 ## Referencias
 
 Nodejs - Event Loop(https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick)
+
+## Melhorar a perfomance do Nodejs
+
+Problema: Quando executamos uma tarefa pessada de modo sincrono o event loop da aplicação fica travado executando esse código, e como rodamos o processo em um thread todas as requisições que chegarem ficarão travadas.
+
+Nodejs: É melhor em tarefas I/O. Sua solução de assincronicidade com o event loop sempre vai superar estrategias de multi-threading para operações I/O.
+
+Soluções para CPU's intensive tasks no Nodejs:
+
+- Cluster: Inicia varios processos do Nodejs, ou seja, varios event loops. Usado quando é necessario que cada processo tenha uma execução isolada.
+- Worker Threads: Cria varias threads de uma instância que roda Nodejs. Diferente do Cluster elas compartilham memoria entre si.
+
+Exemplos de CPU's invenstive taks: Compreesão de Video, Algoritimos de Busca, Ordenar muitos dados.
+
+### Cluster
+
+Uso: Quando uma rota de nossa aplicação tem uma tarefa CPU intensive, podemos usar o Cluster Maneger para criar um novo fork da nossa aplicação, e deixa-lo lidar com novas requisições fornecendo esse novo processo com um novo event-loop limpo
+
+Cluster-Manager: Quando rodamos nossa aplicação o nodejs cria uma instância do Cluster Manager que pode fazer um fork do nosso código e roda-lo em um Worker Instance
+
+Worker Instance: Instancia do nosso programa criada pelo Cluster maneger
+
+Estrategias do Cluster-Maneger para selecionar um processo:
+
+- round-robin(Default, menos no Windows): O processo primario escuta uma porta e conforme chega requisições distribui para as workers instances usando o algoritimo round-robin
+- Direct socket: O processo primario manda um socket com evento, e os workers lidam com ele diretamente
+
+CPU e Processos: Nossa CPU tem um limite de threas que pode executar ao mesmo tempo, de modo que quando ela tem varios processos para serem executados ao mesmo tempo, ela se divide no seu processamento, ficando tudo mais lento.
+
+Trade-off do Cluster: Ao criar muitos Workers, vamos atender mais requisições, porém elas ficaram mais lentas, por ficarem dividas pela CPU.
+
+Ideal de Cluster: Precisa ser igual aos logical cores ou physicial cores da sua CPU.
