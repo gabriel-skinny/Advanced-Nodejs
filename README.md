@@ -106,3 +106,30 @@ CPU e Processos: Nossa CPU tem um limite de threas que pode executar ao mesmo te
 Trade-off do Cluster: Ao criar muitos Workers, vamos atender mais requisições, porém elas ficaram mais lentas, por ficarem dividas pela CPU.
 
 Ideal de Cluster: Precisa ser igual aos logical cores ou physicial cores da sua CPU.
+
+Physical Cores:
+Logical Core: Número de Threads que os Phyisical cores da sua CPU conseguem executar com Multi-Threading.
+
+PM2: Bliobioteca desenvolvida para cuidar dos clusters da sua aplicação que tem um algoritimo de Load-Balacing e mantem sua aplicação viva.
+
+- Beneficios:
+
+  - Utiliza todos os cores disponiveis da CPU
+  - Facilita o load balacing entre os processos
+  - Simplifica a tratativa de novas requisições fornecendo uma porta compartilhada para os processos
+
+- Maleficios:
+  - Mais complexos de debugar
+  - Ruins para tasks de I/O
+  - Gasta mais memória do que criar uma thread
+
+### Worker Threads
+
+Worker Threads: Não é tão util no Nodejs pois a maioria das funções CPU' invensive que chamamos já são executadas em uma Thread separada que não trava o event loop pela LibUv. Só faz sentido se queremos executar em uma thread separada um código que nós criamos.
+
+WebWorker-therds
+
+### Referencias
+
+Multhi-treading on Nodejs Blog rocket(https://blog.logrocket.com/multithreading-node-js-worker-threads/)
+Aumentando a performance do Nodejs - Erick Wendell (https://www.youtube.com/watch?v=EnK8-x8L9TY)
