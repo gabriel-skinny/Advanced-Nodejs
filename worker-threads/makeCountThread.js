@@ -5,25 +5,17 @@ const {
   parentPort,
 } = require("worker_threads");
 
-if (isMainThread) {
-  const makeCountThredFunction = function makeCountThread() {
-    const worker = new Worker(__filename, {
-      workerData: {
-        endCount: 1e10,
-      },
-    });
+const countWoker = workerData;
+let count = 0;
 
-    worker.on("message", (count) => console.log("Count:", count));
-    worker.on("error", (err) => console.log("Worker error: ", err));
-  };
+console.log("Thread Started");
+console.log({ countWoker });
 
-  module.exports = { makeCountThredFunction };
-} else {
-  const countWoker = workerData;
-  let count = 0;
-  console.log({ workerData, countWoker });
-
-  while (count < countWoker.endCount) count++;
-
-  parentPort.postMessage(count);
+while (count < countWoker.endCount) {
+  // CPU Intensive task
+  count++;
 }
+
+console.log("Finished");
+
+parentPort.postMessage(count);
