@@ -17,8 +17,8 @@ Como nodeJs Faz isso:
 
 ## Processos e Threads
 
-Processo: É uma instancia de um programa de computador que está sendo executado
-Thread: Uma thread carrega uma lista de instruções que precisam ser executadas pelo seu CPU do seu computador uma a uma. Um processo pode ter varias threads.
+Processo: É uma instancia de um programa de computador que está sendo executado. Possui um espaço proprio na memória que não pode ser compartilhado com outros processos.
+Thread: Uma thread carrega uma lista de instruções que precisam ser executadas pelo seu CPU do seu computador uma a uma. Um processo pode ter varias threads. Essas, como existem dentro de um processo, compartilham da sua memória
 
 OS Scheduler: Define em que momento certa thread será executada
 
@@ -133,3 +133,13 @@ WebWorker-therds
 
 Multhi-treading on Nodejs Blog rocket(https://blog.logrocket.com/multithreading-node-js-worker-threads/)
 Aumentando a performance do Nodejs - Erick Wendell (https://www.youtube.com/watch?v=EnK8-x8L9TY)
+
+### Problemas de Performance
+
+Index: Estrutura de dados usada para o banco de dados não precisar olhar cada registro em uma coleção para achar o registro
+
+Full collection operations no Database: Quando o database precisa verificar todos os seus registros para achar o pedido. São muito ruins para a performance.
+
+Problema de ter muitos indices: Aumenta o tempo de inserção na coleção, pois o indice precisa ser atualizado a cada novo registro, e isso também gasta mais espaço de disco e memória.
+
+Solução com Cache Server: Cacher as queries feitas e suas respostas, para não precisar ir sempre consultar o database para pegar dados já conhecidos.
